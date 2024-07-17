@@ -29,7 +29,7 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
   console.log(req.body);
 
-  //email and username should be unique
+  //email and username should be unique  .findOne({key : val})
 
   //userschema
   //obj
