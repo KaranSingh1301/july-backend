@@ -1,0 +1,39 @@
+Todo App
+
+setup express server : Done
+mongodb connection : Done
+
+setup EJS : Done
+
+Register Page : Done
+Login Page : Done
+
+Register API : Done
+Login API : Done
+
+Session base auth : Done
+middleware to protect the API's : Done
+
+Dashboard Page : Done
+logout : Done
+logout from all devices : Done
+
+Todo's API
+create API : Done
+read API : Done
+edit API : Done
+delete API : Done
+
+Dashboard Client (axios)
+axios create API : Done
+axios read API : Done
+axios edit API : Done
+axios delete API : Done
+
+Pagination API : Done
+Ratelimiting : Done
+
+Deploy
+Email Base Auth (JWT)
+
+
