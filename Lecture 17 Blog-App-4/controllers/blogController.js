@@ -4,6 +4,8 @@ const {
   getBlogs,
   getMyBlogs,
   getBlogWithId,
+  editBlogWithId,
+  deleteBlogId,
 } = require("../models/blogModel");
 const blogDataValidate = require("../utils/blogUtil");
 
@@ -125,8 +127,56 @@ const editBlogController = async (req, res) => {
       });
     }
 
-    //Home work
+    //check if 30mins or not
+    console.log((Date.now() - blogDb.creationDateTime) / (1000 * 60));
 
+    const diff = (Date.now() - blogDb.creationDateTime) / (1000 * 60);
+
+    if (diff > 30) {
+      return res.send({
+        status: 400,
+        message: "Not allowed to edit the blog after 30 mins of creation",
+      });
+    }
+
+    const blogDbNew = await editBlogWithId({ title, textBody, blogId });
+
+    return res.send({
+      status: 200,
+      message: "Blog updated successfully",
+      data: blogDbNew,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.send({
+      status: 500,
+      message: "Internal server error",
+      error: error,
+    });
+  }
+};
+
+const deleteBlogController = async (req, res) => {
+  const blogId = req.body.blogId;
+  const userId = req.session.user.userId;
+
+  try {
+    const blogDb = await getBlogWithId({ blogId });
+
+    if (!userId.equals(blogDb.userId)) {
+      return res.send({
+        status: 403,
+        message: "Not allowed to delete the blog",
+      });
+    }
+
+    const deletedBlogDb = await deleteBlogId({ blogId });
+
+    return res.send({
+      status: 200,
+      message: "Blog deleted successfully",
+      data: deletedBlogDb,
+    });
   } catch (error) {
     return res.send({
       status: 500,
@@ -134,9 +184,6 @@ const editBlogController = async (req, res) => {
       error: error,
     });
   }
-
-  return res.send("all ok");
-  //find the blog
 };
 
 module.exports = {
@@ -144,4 +191,5 @@ module.exports = {
   getBlogsController,
   getMyBlogsController,
   editBlogController,
+  deleteBlogController,
 };
